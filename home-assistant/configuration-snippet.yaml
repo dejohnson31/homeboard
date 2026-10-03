@@ -1,0 +1,6 @@
+# Add to /config/configuration.yaml ONLY if you host HomeBoard somewhere other
+# than Home Assistant itself (e.g. GitHub Pages or Vercel). Not needed when the
+# app lives in /config/www/homeboard/ (same origin).
+http:
+  cors_allowed_origins:
+    - https://YOUR-GITHUB-USERNAME.github.io

@@ -1,0 +1,4 @@
+node_modules/
+app/dist/
+school-feed/pca.ics
+*.log

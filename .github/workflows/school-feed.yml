@@ -1,0 +1,43 @@
+# Refreshes the Providence Christian Academy calendar feed every morning and
+# publishes it with GitHub Pages at:
+#   https://<your-github-username>.github.io/<repo-name>/pca.ics
+# Home Assistant's "Remote Calendar" integration subscribes to that URL.
+name: School calendar feed
+
+on:
+  schedule:
+    - cron: "15 10 * * *"   # 6:15 AM Eastern (10:15 UTC) daily
+  workflow_dispatch: {}      # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build pca.ics
+        run: |
+          mkdir -p site
+          python school-feed/pca_to_ics.py --months 6 --out site/pca.ics
+          echo '<p>School feed: <a href="pca.ics">pca.ics</a></p>' > site/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
