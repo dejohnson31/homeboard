@@ -12,13 +12,13 @@ function Ver($cmd, $arg) {
 }
 
 # 1. Tools
-$git = Ver git --version
+$git = Ver "git" "--version"
 Check "Git            $git" ([bool]$git) "Install https://gitforwindows.org/"
-$node = Ver node --version
+$node = Ver "node" "--version"
 Check "Node.js        $node" ([bool]$node) "Install LTS from https://nodejs.org/en/download"
-$npm = Ver npm.cmd --version
+$npm = Ver "npm.cmd" "--version"
 Check "npm            $npm" ([bool]$npm) "Comes with Node.js; reinstall Node.js"
-$py = Ver python --version
+$py = Ver "python" "--version"
 if ($py -match "Microsoft Store|was not found") { $py = $null }
 Check "Python         $py" ([bool]$py) "Install https://www.python.org/downloads/ and tick 'Add Python to PATH'"
 
